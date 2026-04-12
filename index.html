@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防爆电机子计划员工作台</title>
+    <title>防爆电机计划员工作台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -29,10 +29,54 @@
         .scroll-area::-webkit-scrollbar-thumb:hover { background: #475569; }
         .nav-btn { transition: all 0.15s; }
         .nav-btn:hover { filter: brightness(1.2); }
-        .nav-btn.active { ring: 2px; }
+        .nav-btn.active { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen overflow-hidden flex flex-col">
+
+    <!-- 计划员选择与登录 -->
+    <div id="planner-gate" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl">
+            <div id="planner-select-panel" class="glass-panel rounded-2xl p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-white">请选择防爆电机计划员工作台</h2>
+                    <span class="text-xs text-slate-400">共 7 个计划员</span>
+                </div>
+                <div id="planner-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+            </div>
+
+            <div id="planner-login-panel" class="hidden glass-panel rounded-2xl p-6 border border-slate-700 max-w-md mx-auto">
+                <div class="mb-4">
+                    <h3 class="text-base font-bold text-white">进入工作台</h3>
+                    <p class="text-xs text-slate-400 mt-1">计划员：<span id="login-planner-name" class="text-slate-200"></span></p>
+                </div>
+                <form id="planner-login-form" class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">账户</label>
+                        <input id="login-account" type="text" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="请输入账户">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">密码</label>
+                        <input id="login-password" type="password" class="input-field w-full rounded-lg px-3 py-2 text-sm" placeholder="请输入密码">
+                    </div>
+                    <p id="login-error" class="text-xs text-red-400 hidden">账号或密码错误，请重试。</p>
+                    <div class="flex items-center justify-between pt-1">
+                        <button type="button" onclick="backToPlannerSelect()" class="text-xs text-slate-400 hover:text-white">返回选择</button>
+                        <button type="submit" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition-all">登录工作台</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- 顶部抬头 -->
     <header class="bg-slate-800 border-b border-slate-700 px-4 py-3 shrink-0">
@@ -44,7 +88,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-white">防爆电机子计划员工作台</h1>
+                    <h1 class="text-lg font-bold text-white">防爆电机计划员工作台</h1>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -64,11 +108,11 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <div class="text-right">
-                        <div class="text-sm font-medium text-white">张三</div>
+                        <div id="header-planner-name" class="text-sm font-medium text-white">-</div>
                         <div class="text-xs text-slate-400">子计划员</div>
                     </div>
-                    <div class="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                        张
+                    <div id="header-planner-avatar" class="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                        -
                     </div>
                 </div>
             </div>
@@ -381,16 +425,16 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                            <div class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">张</div>
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
                             <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                                <div class="text-[10px] text-slate-400 mb-0.5">张三 | 08:15</div>
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:15</div>
                                 <div class="text-xs text-slate-200">收到。WO-001已完工35台，营收约¥52,500；WO-002生产中28台，预计14:00完工。</div>
                             </div>
                         </div>
                         <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                            <div class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">张</div>
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
                             <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                                <div class="text-[10px] text-slate-400 mb-0.5">张三 | 09:30</div>
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 09:30</div>
                                 <div class="text-xs text-slate-200">⚠️ 异常上报：机座铸件库存仅剩42个，低于安全库存，已影响WO-003排程，请协调采购补货。</div>
                             </div>
                         </div>
@@ -402,9 +446,9 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                            <div class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">张</div>
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
                             <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                                <div class="text-[10px] text-slate-400 mb-0.5">张三 | 14:10</div>
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 14:10</div>
                                 <div class="text-xs text-slate-200">日生产营收预计¥219,000，超额¥69,000，今日完成率目标100%，详见完成率报告。</div>
                             </div>
                         </div>
@@ -420,9 +464,9 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                            <div class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">张</div>
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
                             <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                                <div class="text-[10px] text-slate-400 mb-0.5">张三 | 08:10</div>
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:10</div>
                                 <div class="text-xs text-slate-200">收到，注意完工后及时在SAP回报工单，今日营收核算需要。</div>
                             </div>
                         </div>
@@ -434,9 +478,9 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                            <div class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">张</div>
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
                             <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                                <div class="text-[10px] text-slate-400 mb-0.5">张三 | 11:25</div>
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 11:25</div>
                                 <div class="text-xs text-slate-200">已记录异常，定子工单暂缓，轴承缺料已上报主管，等候补货通知。</div>
                             </div>
                         </div>
@@ -546,7 +590,6 @@
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         下发执行
                                     </button>
-                                    <button type="button" class="px-3 py-1.5 border border-slate-600 rounded-lg text-xs text-slate-400 hover:bg-slate-800 transition-all">暂存</button>
                                 </div>
                             </div>
                         </form>
@@ -606,7 +649,6 @@
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         下发执行
                                     </button>
-                                    <button type="button" class="px-3 py-1.5 border border-slate-600 rounded-lg text-xs text-slate-400 hover:bg-slate-800 transition-all">暂存</button>
                                 </div>
                             </div>
                         </form>
@@ -682,13 +724,13 @@
                             <span class="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
                             <h3 class="text-xs font-bold text-slate-400">🗂 已下发工单记录</h3>
                         </div>
-                        <span class="text-[10px] text-slate-500">今日 · 共5条</span>
+                        <span id="records-count" class="text-[10px] text-slate-500">今日 · 共5条</span>
                     </div>
                     <div class="p-3 space-y-2 text-xs">
                         <!-- 装配工单 -->
                         <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">📋 电机装配</div>
                         <div class="space-y-1.5">
-                            <div class="flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
+                            <div class="workorder-row flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0"></span>
                                     <span class="text-slate-300 font-medium">WO-2026-0412-001</span>
@@ -701,7 +743,7 @@
                                     <span class="text-slate-600">08:00下发</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
+                            <div class="workorder-row flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
                                     <span class="text-slate-300 font-medium">WO-2026-0412-002</span>
@@ -714,7 +756,7 @@
                                     <span class="text-slate-600">10:30下发</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
+                            <div class="workorder-row flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></span>
                                     <span class="text-slate-300 font-medium">WO-2026-0412-003</span>
@@ -725,6 +767,7 @@
                                     <span class="text-slate-300">80台</span>
                                     <span class="text-[10px] text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded">已下发</span>
                                     <span class="text-slate-600">14:00下发</span>
+                                    <button type="button" onclick="revokeWorkOrder(this, 'WO-2026-0412-003')" class="px-2 py-0.5 text-[10px] text-red-300 border border-red-500/40 rounded hover:bg-red-500/10 transition-all">撤销</button>
                                 </div>
                             </div>
                         </div>
@@ -732,7 +775,7 @@
                         <!-- 半制品工单 -->
                         <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">🔩 半制品加工</div>
                         <div class="space-y-1.5">
-                            <div class="flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
+                            <div class="workorder-row flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0"></span>
                                     <span class="text-slate-300 font-medium">WO-2026-0412-004</span>
@@ -746,7 +789,7 @@
                                     <span class="text-slate-600">09:00下发</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
+                            <div class="workorder-row flex items-center justify-between py-1.5 px-2 rounded bg-slate-800/50 border border-slate-700/50">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span>
                                     <span class="text-slate-300 font-medium">WO-2026-0412-005</span>
@@ -769,6 +812,93 @@
     </main>
 
     <script>
+        const plannerList = ['张三', '李四', '王五', '赵六', '孙七', '周八', '吴九'];
+        let selectedPlanner = '';
+
+        function buildPlannerCards() {
+            const plannerGrid = document.getElementById('planner-grid');
+            if (!plannerGrid) return;
+
+            plannerGrid.innerHTML = plannerList.map((name, index) => `
+                <button
+                    onclick="selectPlanner('${name}')"
+                    class="text-left bg-slate-800/60 border border-slate-700 hover:border-amber-500/50 rounded-xl p-3 transition-all hover:-translate-y-0.5"
+                >
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">计划员 ${index + 1}</span>
+                        <span class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white text-xs flex items-center justify-center font-bold">${name.charAt(0)}</span>
+                    </div>
+                    <div class="text-sm font-semibold text-slate-100">${name}</div>
+                    <div class="text-[11px] text-slate-500 mt-1">点击进入工作台</div>
+                </button>
+            `).join('');
+        }
+
+        function selectPlanner(name) {
+            selectedPlanner = name;
+            document.getElementById('planner-select-panel').classList.add('hidden');
+            document.getElementById('planner-login-panel').classList.remove('hidden');
+            document.getElementById('login-planner-name').textContent = name;
+            document.getElementById('login-account').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function backToPlannerSelect() {
+            document.getElementById('planner-login-panel').classList.add('hidden');
+            document.getElementById('planner-select-panel').classList.remove('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function applyPlanner(name) {
+            const avatar = name.charAt(0) || '-';
+            const headerName = document.getElementById('header-planner-name');
+            const headerAvatar = document.getElementById('header-planner-avatar');
+
+            if (headerName) headerName.textContent = name;
+            if (headerAvatar) headerAvatar.textContent = avatar;
+
+            document.querySelectorAll('[data-planner-name]').forEach(el => {
+                el.textContent = name;
+            });
+            document.querySelectorAll('[data-planner-avatar]').forEach(el => {
+                el.textContent = avatar;
+            });
+        }
+
+        function handlePlannerLogin(event) {
+            event.preventDefault();
+            const account = document.getElementById('login-account').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            const errorEl = document.getElementById('login-error');
+
+            if (account === 'sapi' && password === '123') {
+                applyPlanner(selectedPlanner);
+                document.getElementById('planner-gate').classList.add('hidden');
+                return;
+            }
+
+            errorEl.classList.remove('hidden');
+        }
+
+        function updateRecordCount() {
+            const total = document.querySelectorAll('#dec-records .workorder-row').length;
+            const countEl = document.getElementById('records-count');
+            if (countEl) {
+                countEl.textContent = `今日 · 共${total}条`;
+            }
+        }
+
+        function revokeWorkOrder(buttonEl, workOrderNo) {
+            const ok = confirm(`确认撤销工单 ${workOrderNo} 吗？`);
+            if (!ok) return;
+
+            const row = buttonEl.closest('.workorder-row');
+            if (row) row.remove();
+            updateRecordCount();
+            alert(`工单 ${workOrderNo} 已撤销`);
+        }
+
         // 聊天窗口切换
         function switchChat(target) {
             document.querySelectorAll('.chat-panel').forEach(el => el.classList.add('hidden'));
@@ -827,6 +957,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            buildPlannerCards();
+            document.getElementById('planner-login-form').addEventListener('submit', handlePlannerLogin);
+            updateRecordCount();
             updateTime();
             setInterval(updateTime, 1000);
         });
