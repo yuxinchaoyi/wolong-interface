@@ -154,21 +154,22 @@
         </div>
     </section>
 
-    <!-- 第二层：感知 + 决策 + 沟通 三列布局 -->
+    <!-- 第二层：感知 + 决策 两列布局 -->
     <main class="flex-1 grid grid-cols-12 gap-0 overflow-hidden">
 
         <!-- 左侧：感知输入区 -->
-        <section class="col-span-4 bg-slate-800/20 overflow-hidden flex flex-col border-r border-slate-700">
+        <section class="col-span-5 bg-slate-800/20 overflow-hidden flex flex-col border-r border-slate-700">
             <!-- 固定标题栏 -->
             <div class="px-4 py-3 shrink-0 bg-slate-800/40 border-b border-slate-700">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                        <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider">📡 感知信息</h2>
+                        <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider">📡 感知输入</h2>
                     </div>
                     <div class="flex items-center space-x-1 text-xs">
                         <button onclick="scrollToSection('section-sap')" class="nav-btn px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded border border-blue-500/30 hover:bg-blue-500/40 cursor-pointer">SAP</button>
                         <button onclick="scrollToSection('section-oa')" class="nav-btn px-2 py-0.5 bg-green-500/20 text-green-400 rounded border border-green-500/30 hover:bg-green-500/40 cursor-pointer">OA</button>
+                        <button onclick="scrollToSection('section-comm')" class="nav-btn px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded border border-purple-500/30 hover:bg-purple-500/40 cursor-pointer">沟通</button>
                     </div>
                 </div>
             </div>
@@ -401,17 +402,125 @@
                     </div>
                 </div>
 
+                <!-- 沟通协调卡片 -->
+                <div id="section-comm" class="glass-panel rounded-lg p-3 overflow-hidden" style="border-left: 3px solid #a855f7;">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">💬 沟通协调</span>
+                        <div class="flex space-x-1">
+                            <button onclick="switchChat('supervisor')" id="btn-chat-supervisor" class="px-2 py-0.5 text-[10px] font-medium rounded bg-amber-600/20 text-amber-400 border border-amber-500/30 transition-all flex items-center">
+                                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1 shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>计划主管
+                            </button>
+                            <button onclick="switchChat('workshop')" id="btn-chat-workshop" class="px-2 py-0.5 text-[10px] font-medium rounded text-slate-400 hover:text-white transition-all flex items-center">
+                                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1 shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>车间
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 聊天内容：计划主管 -->
+                    <div id="chat-supervisor" class="chat-panel scroll-area space-y-2 mb-2 max-h-36 overflow-y-auto">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">主</div>
+                            <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5">计划主管 | 08:00</div>
+                                <div class="text-xs text-slate-200">今日营收目标¥150,000，重点关注缺口，及时上报工单异常。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
+                            <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:15</div>
+                                <div class="text-xs text-slate-200">收到。WO-001已完工35台，营收约¥52,500；WO-002生产中28台，预计14:00完工。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
+                            <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 09:30</div>
+                                <div class="text-xs text-slate-200">⚠️ 异常上报：机座铸件库存仅剩42个，低于安全库存，已影响WO-003排程，请协调采购补货。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">主</div>
+                            <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5">计划主管 | 09:45</div>
+                                <div class="text-xs text-slate-200">已知悉，已通知采购紧急补货，预计今日16:00到货，WO-003暂按80台执行。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
+                            <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 14:10</div>
+                                <div class="text-xs text-slate-200">日生产营收预计¥219,000，超额¥69,000，今日完成率目标100%，详见完成率报告。</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 聊天内容：车间 -->
+                    <div id="chat-workshop" class="chat-panel scroll-area hidden space-y-2 mb-2 max-h-36 overflow-y-auto">
+                        <div class="flex items-start space-x-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
+                            <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 08:05</div>
+                                <div class="text-xs text-slate-200">WO-001（YB3-63M2-2 35台）已领料，装配一组上线，预计10:30完工。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
+                            <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:10</div>
+                                <div class="text-xs text-slate-200">收到，注意完工后及时在SAP回报工单，今日营收核算需要。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
+                            <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 11:20</div>
+                                <div class="text-xs text-slate-200">⚠️ 设备异常：绕线机故障，定子加工暂停，预计影响2小时，零部件原料轴承库存也告急。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
+                            <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
+                            <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 11:25</div>
+                                <div class="text-xs text-slate-200">已记录异常，定子工单暂缓，轴承缺料已上报主管，等候补货通知。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-2">
+                            <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
+                            <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
+                                <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 14:05</div>
+                                <div class="text-xs text-slate-200">绕线机已修复，14:00恢复生产，WO-004定子工单重新上线。</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 输入框：文本/语音/文件 -->
+                    <div class="flex items-center space-x-2 pt-2 border-t border-slate-700">
+                        <div class="flex space-x-0.5">
+                            <button class="p-1 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded transition-all" title="发送文件">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                            </button>
+                            <button class="p-1 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-all" title="语音消息">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                            </button>
+                        </div>
+                        <input type="text" placeholder="输入消息..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                        <button onclick="alert('消息已发送')" class="px-2 py-1 bg-indigo-600 text-white rounded-lg text-xs hover:bg-indigo-500 transition-all">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 中间：决策下达区 -->
-        <section class="col-span-5 bg-slate-900 overflow-hidden flex flex-col border-r border-slate-700">
+        <!-- 右侧：决策下达区 -->
+        <section class="col-span-7 bg-slate-900 overflow-hidden flex flex-col">
             <!-- 固定标题栏 -->
             <div class="px-4 py-3 shrink-0 bg-slate-800/40 border-b border-slate-700">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider">✅ 人工决策</h2>
+                        <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider">✅ 决策下发</h2>
                     </div>
                     <div class="flex items-center space-x-1 text-xs">
                         <button onclick="scrollToDecision('dec-assembly')" class="nav-btn px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded border border-purple-500/30 hover:bg-purple-500/40 cursor-pointer">装配</button>
@@ -423,20 +532,20 @@
             </div>
 
             <!-- 滚动内容区：三张竖向卡片 -->
-            <div id="decision-scroll" class="scroll-area flex-1 overflow-y-auto p-3 space-y-2 min-h-0">
+            <div id="decision-scroll" class="scroll-area flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
 
                 <!-- 卡片一：电机装配 -->
                 <div id="dec-assembly" class="glass-panel rounded-lg overflow-hidden">
-                    <div class="px-2.5 py-1.5 bg-purple-500/10 border-b border-purple-500/20 flex items-center space-x-2">
+                    <div class="px-3 py-2 bg-purple-500/10 border-b border-purple-500/20 flex items-center space-x-2">
                         <span class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
                         <h3 class="text-xs font-bold text-purple-400">📋 电机装配</h3>
                     </div>
-                    <div class="p-2.5">
-                        <form class="space-y-2" onsubmit="event.preventDefault(); generateExecution();">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="p-3">
+                        <form class="space-y-3" onsubmit="event.preventDefault(); generateExecution();">
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">电机型号 <span class="text-red-400">*</span></label>
-                                    <input list="motor-models" type="text" placeholder="输入或选择电机型号..." class="input-field w-full rounded px-2 py-1 text-xs">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">电机型号 <span class="text-red-400">*</span></label>
+                                    <input list="motor-models" type="text" placeholder="输入或选择电机型号..." class="input-field w-full rounded-lg px-3 py-2 text-sm">
                                     <datalist id="motor-models">
                                         <option value="YB3-63M2-2">
                                         <option value="YB3-80M1-4">
@@ -444,41 +553,41 @@
                                     </datalist>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">生产单元 <span class="text-red-400">*</span></label>
-                                    <select class="input-field w-full rounded px-2 py-1 text-xs">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">生产单元 <span class="text-red-400">*</span></label>
+                                    <select class="input-field w-full rounded-lg px-3 py-2 text-sm">
                                         <option>装配一组</option>
                                         <option>装配二组</option>
                                         <option>中心高63-90专线</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-2">
+                            <div class="grid grid-cols-3 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">生产数量 <span class="text-red-400">*</span></label>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">生产数量 <span class="text-red-400">*</span></label>
                                     <div class="relative">
-                                        <input type="number" id="assembly-qty" value="80" class="input-field w-full rounded px-2 py-1 text-xs pr-7">
-                                        <span class="absolute right-2 top-1 text-xs text-slate-500">台</span>
+                                        <input type="number" id="assembly-qty" value="80" class="input-field w-full rounded-lg px-3 py-2 text-sm pr-8">
+                                        <span class="absolute right-2 top-2 text-sm text-slate-500">台</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">开始时间</label>
-                                    <input type="datetime-local" class="input-field w-full rounded px-2 py-1 text-xs" value="2026-04-12T14:00">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">开始时间</label>
+                                    <input type="datetime-local" class="input-field w-full rounded-lg px-3 py-2 text-sm" value="2026-04-12T14:00">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">结束时间</label>
-                                    <input type="datetime-local" class="input-field w-full rounded px-2 py-1 text-xs" value="2026-04-12T22:00">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">结束时间</label>
+                                    <input type="datetime-local" class="input-field w-full rounded-lg px-3 py-2 text-sm" value="2026-04-12T22:00">
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between bg-slate-800/60 rounded px-2.5 py-1.5 border border-slate-700">
+                            <div class="flex items-center justify-between bg-slate-800/60 rounded-lg px-3 py-2 border border-slate-700">
                                 <div class="flex items-center space-x-2">
-                                    <label class="flex items-center space-x-1.5 text-[11px] text-slate-300">
+                                    <label class="flex items-center space-x-2 text-xs text-slate-300">
                                         <input type="checkbox" checked class="rounded text-purple-500 bg-slate-700 border-slate-600">
                                         <span>决策下发至 SAP-PP模块</span>
                                     </label>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>SAP在线</span>
-                                    <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded text-[11px] font-semibold hover:opacity-90 transition-all flex items-center">
+                                    <span class="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>SAP在线</span>
+                                    <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-all flex items-center">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         下发执行
                                     </button>
@@ -490,54 +599,54 @@
 
                 <!-- 卡片二：半制品加工 -->
                 <div id="dec-processing" class="glass-panel rounded-lg overflow-hidden">
-                    <div class="px-2.5 py-1.5 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center space-x-2">
+                    <div class="px-3 py-2 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center space-x-2">
                         <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full"></span>
                         <h3 class="text-xs font-bold text-indigo-400">🔩 半制品加工</h3>
                     </div>
-                    <div class="p-2.5">
-                        <form class="space-y-2" onsubmit="event.preventDefault(); alert('半制品加工工单已下发');">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="p-3">
+                        <form class="space-y-3" onsubmit="event.preventDefault(); alert('半制品加工工单已下发');">
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">半制品类型 <span class="text-red-400">*</span></label>
-                                    <select class="input-field w-full rounded px-2 py-1 text-xs">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">半制品类型 <span class="text-red-400">*</span></label>
+                                    <select class="input-field w-full rounded-lg px-3 py-2 text-sm">
                                         <option>定子</option><option>转子</option><option>机座</option>
                                         <option>前端盖</option><option>后端盖</option><option>风罩</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">生产单元 <span class="text-red-400">*</span></label>
-                                    <select class="input-field w-full rounded px-2 py-1 text-xs">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">生产单元 <span class="text-red-400">*</span></label>
+                                    <select class="input-field w-full rounded-lg px-3 py-2 text-sm">
                                         <option>大一线</option><option>大二线</option><option>小一线</option>
                                         <option>小二线</option><option>小三线</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-2">
+                            <div class="grid grid-cols-3 gap-3">
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">半制品型号 <span class="text-red-400">*</span></label>
-                                    <input list="semi-models-proc" type="text" placeholder="输入或选择型号..." class="input-field w-full rounded px-2 py-1 text-xs">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">半制品型号 <span class="text-red-400">*</span></label>
+                                    <input list="semi-models-proc" type="text" placeholder="输入或选择型号..." class="input-field w-full rounded-lg px-3 py-2 text-sm">
                                     <datalist id="semi-models-proc">
                                         <option value="YB3-DZ-001"><option value="YB3-ZZ-001"><option value="YB3-JZ-001">
                                         <option value="YB3-QDG-001"><option value="YB3-HDG-001"><option value="YB3-FZ-001">
                                     </datalist>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">开始时间</label>
-                                    <input type="datetime-local" class="input-field w-full rounded px-2 py-1 text-xs" value="2026-04-12T14:00">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">开始时间</label>
+                                    <input type="datetime-local" class="input-field w-full rounded-lg px-3 py-2 text-sm" value="2026-04-12T14:00">
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-medium text-slate-300 mb-0.5">结束时间</label>
-                                    <input type="datetime-local" class="input-field w-full rounded px-2 py-1 text-xs" value="2026-04-12T22:00">
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">结束时间</label>
+                                    <input type="datetime-local" class="input-field w-full rounded-lg px-3 py-2 text-sm" value="2026-04-12T22:00">
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between bg-slate-800/60 rounded px-2.5 py-1.5 border border-slate-700">
-                                <label class="flex items-center space-x-1.5 text-[11px] text-slate-300">
+                            <div class="flex items-center justify-between bg-slate-800/60 rounded-lg px-3 py-2 border border-slate-700">
+                                <label class="flex items-center space-x-2 text-xs text-slate-300">
                                     <input type="checkbox" checked class="rounded text-purple-500 bg-slate-700 border-slate-600">
                                     <span>决策下发至 SAP-PP模块</span>
                                 </label>
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-[10px] text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>SAP在线</span>
-                                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1 rounded text-[11px] font-semibold hover:opacity-90 transition-all flex items-center">
+                                    <span class="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>SAP在线</span>
+                                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-all flex items-center">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         下发执行
                                     </button>
@@ -549,58 +658,58 @@
 
                 <!-- 卡片三：日计划完成率 -->
                 <div id="dec-completion" class="glass-panel rounded-lg overflow-hidden">
-                    <div class="px-2.5 py-1.5 bg-amber-500/10 border-b border-amber-500/20 flex items-center space-x-2">
+                    <div class="px-3 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-center space-x-2">
                         <span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
                         <h3 class="text-xs font-bold text-amber-400">📊 日计划完成率</h3>
                     </div>
-                    <div class="p-2.5">
-                        <form class="space-y-2" onsubmit="event.preventDefault(); alert('日计划完成率目标已推送至计划主管');">
-                            <div class="grid grid-cols-2 gap-2">
+                    <div class="p-3">
+                        <form class="space-y-3" onsubmit="event.preventDefault(); alert('日计划完成率目标已推送至计划主管');">
+                            <div class="grid grid-cols-2 gap-3">
                                 <!-- 电机装配完成率 -->
-                                <div class="bg-purple-500/10 border border-purple-500/20 rounded p-2">
-                                    <div class="text-[11px] font-semibold text-purple-400 mb-1.5">📋 电机装配</div>
-                                    <div class="mb-1.5">
-                                        <label class="block text-[10px] text-slate-400 mb-0.5">目标完成率</label>
+                                <div class="bg-purple-500/10 border border-purple-500/20 rounded-lg p-2.5">
+                                    <div class="text-xs font-semibold text-purple-400 mb-2">📋 电机装配</div>
+                                    <div class="mb-2">
+                                        <label class="block text-[11px] text-slate-400 mb-1">目标完成率</label>
                                         <div class="relative">
-                                            <input type="number" placeholder="100" min="0" max="100" class="input-field w-full rounded px-2 py-1 text-xs pr-7">
-                                            <span class="absolute right-2 top-1 text-xs text-slate-500">%</span>
+                                            <input type="number" placeholder="100" min="0" max="100" class="input-field w-full rounded px-2 py-1.5 text-sm pr-7">
+                                            <span class="absolute right-2 top-1.5 text-xs text-slate-500">%</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] text-slate-400 mb-0.5">备注</label>
-                                        <input type="text" placeholder="如：受缺料影响…" class="input-field w-full rounded px-2 py-1 text-xs">
+                                        <label class="block text-[11px] text-slate-400 mb-1">备注</label>
+                                        <input type="text" placeholder="如：受缺料影响…" class="input-field w-full rounded px-2 py-1.5 text-xs">
                                     </div>
                                 </div>
                                 <!-- 半制品加工完成率 -->
-                                <div class="bg-indigo-500/10 border border-indigo-500/20 rounded p-2">
-                                    <div class="text-[11px] font-semibold text-indigo-400 mb-1.5">🔩 半制品加工</div>
-                                    <div class="mb-1.5">
-                                        <label class="block text-[10px] text-slate-400 mb-0.5">半制品类型</label>
-                                        <select class="input-field w-full rounded px-2 py-1 text-xs">
+                                <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-2.5">
+                                    <div class="text-xs font-semibold text-indigo-400 mb-2">🔩 半制品加工</div>
+                                    <div class="mb-2">
+                                        <label class="block text-[11px] text-slate-400 mb-1">半制品类型</label>
+                                        <select class="input-field w-full rounded px-2 py-1.5 text-xs">
                                             <option value="">请选择</option>
                                             <option>定子</option><option>转子</option><option>机座</option>
                                             <option>前端盖</option><option>后端盖</option><option>风罩</option>
                                         </select>
                                     </div>
-                                    <div class="mb-1.5">
-                                        <label class="block text-[10px] text-slate-400 mb-0.5">目标完成率</label>
+                                    <div class="mb-2">
+                                        <label class="block text-[11px] text-slate-400 mb-1">目标完成率</label>
                                         <div class="relative">
-                                            <input type="number" placeholder="100" min="0" max="100" class="input-field w-full rounded px-2 py-1 text-xs pr-7">
-                                            <span class="absolute right-2 top-1 text-xs text-slate-500">%</span>
+                                            <input type="number" placeholder="100" min="0" max="100" class="input-field w-full rounded px-2 py-1.5 text-sm pr-7">
+                                            <span class="absolute right-2 top-1.5 text-xs text-slate-500">%</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] text-slate-400 mb-0.5">备注</label>
-                                        <input type="text" placeholder="如：定子缺料…" class="input-field w-full rounded px-2 py-1 text-xs">
+                                        <label class="block text-[11px] text-slate-400 mb-1">备注</label>
+                                        <input type="text" placeholder="如：定子缺料…" class="input-field w-full rounded px-2 py-1.5 text-xs">
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between bg-slate-800/60 rounded px-2.5 py-1.5 border border-slate-700">
+                            <div class="flex items-center justify-between bg-slate-800/60 rounded-lg px-3 py-2 border border-slate-700">
                                 <div class="flex items-center space-x-2">
                                     <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>
-                                    <span class="text-[11px] text-green-400">计划主管在线</span>
+                                    <span class="text-xs text-green-400">计划主管在线</span>
                                 </div>
-                                <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded text-[11px] font-semibold hover:opacity-90 transition-all flex items-center">
+                                <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-all flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     下发至计划主管
                                 </button>
@@ -611,14 +720,14 @@
 
                 <!-- 卡片四：已下发工单记录 -->
                 <div id="dec-records" class="glass-panel rounded-lg overflow-hidden">
-                    <div class="px-2.5 py-1.5 bg-slate-700/30 border-b border-slate-700 flex items-center justify-between">
+                    <div class="px-3 py-2 bg-slate-700/30 border-b border-slate-700 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <span class="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
                             <h3 class="text-xs font-bold text-slate-400">🗂 已下发工单记录</h3>
                         </div>
                         <span id="records-count" class="text-[10px] text-slate-500">今日 · 共5条</span>
                     </div>
-                    <div class="p-2.5 space-y-1.5 text-xs">
+                    <div class="p-3 space-y-2 text-xs">
                         <!-- 装配工单 -->
                         <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">📋 电机装配</div>
                         <div class="space-y-1.5">
@@ -699,124 +808,6 @@
                     </div>
                 </div>
 
-            </div>
-        </section>
-
-        <!-- 右侧：沟通协调区 -->
-        <section class="col-span-3 bg-slate-800/20 overflow-hidden flex flex-col">
-            <!-- 固定标题栏 -->
-            <div class="px-3 py-3 shrink-0 bg-slate-800/40 border-b border-slate-700">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2">
-                        <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider">💬 反馈信息</h2>
-                    </div>
-                    <div class="flex space-x-1">
-                        <button onclick="switchChat('supervisor')" id="btn-chat-supervisor" class="px-2 py-0.5 text-[10px] font-medium rounded bg-amber-600/20 text-amber-400 border border-amber-500/30 transition-all flex items-center">
-                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1 shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>计划主管
-                        </button>
-                        <button onclick="switchChat('workshop')" id="btn-chat-workshop" class="px-2 py-0.5 text-[10px] font-medium rounded text-slate-400 hover:text-white transition-all flex items-center">
-                            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1 shadow-[0_0_4px_rgba(52,211,153,0.8)]"></span>车间
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 聊天内容区 -->
-            <div class="flex-1 flex flex-col min-h-0 p-3">
-                <!-- 聊天内容：计划主管 -->
-                <div id="chat-supervisor" class="chat-panel scroll-area space-y-2 flex-1 overflow-y-auto">
-                    <div class="flex items-start space-x-2">
-                        <div class="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">主</div>
-                        <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5">计划主管 | 08:00</div>
-                            <div class="text-xs text-slate-200">今日营收目标¥150,000，重点关注缺口，及时上报工单异常。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                        <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
-                        <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:15</div>
-                            <div class="text-xs text-slate-200">收到。WO-001已完工35台，营收约¥52,500；WO-002生产中28台，预计14:00完工。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                        <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
-                        <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 09:30</div>
-                            <div class="text-xs text-slate-200">⚠️ 异常上报：机座铸件库存仅剩42个，低于安全库存，已影响WO-003排程，请协调采购补货。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <div class="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">主</div>
-                        <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5">计划主管 | 09:45</div>
-                            <div class="text-xs text-slate-200">已知悉，已通知采购紧急补货，预计今日16:00到货，WO-003暂按80台执行。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                        <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
-                        <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 14:10</div>
-                            <div class="text-xs text-slate-200">日生产营收预计¥219,000，超额¥69,000，今日完成率目标100%，详见完成率报告。</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 聊天内容：车间 -->
-                <div id="chat-workshop" class="chat-panel scroll-area hidden space-y-2 flex-1 overflow-y-auto">
-                    <div class="flex items-start space-x-2">
-                        <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
-                        <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 08:05</div>
-                            <div class="text-xs text-slate-200">WO-001（YB3-63M2-2 35台）已领料，装配一组上线，预计10:30完工。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                        <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
-                        <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 08:10</div>
-                            <div class="text-xs text-slate-200">收到，注意完工后及时在SAP回报工单，今日营收核算需要。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
-                        <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 11:20</div>
-                            <div class="text-xs text-slate-200">⚠️ 设备异常：绕线机故障，定子加工暂停，预计影响2小时，零部件原料轴承库存也告急。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2 flex-row-reverse space-x-reverse">
-                        <div data-planner-avatar class="w-6 h-6 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">-</div>
-                        <div class="bg-indigo-600/30 border border-indigo-500/30 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5"><span data-planner-name>-</span> | 11:25</div>
-                            <div class="text-xs text-slate-200">已记录异常，定子工单暂缓，轴承缺料已上报主管，等候补货通知。</div>
-                        </div>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
-                        <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
-                            <div class="text-[10px] text-slate-400 mb-0.5">车间主任 | 14:05</div>
-                            <div class="text-xs text-slate-200">绕线机已修复，14:00恢复生产，WO-004定子工单重新上线。</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 输入框：文本/语音/文件 -->
-                <div class="flex items-center space-x-1.5 pt-2 mt-2 border-t border-slate-700 shrink-0">
-                    <div class="flex space-x-0.5">
-                        <button class="p-1 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded transition-all" title="发送文件">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                        </button>
-                        <button class="p-1 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-all" title="语音消息">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                        </button>
-                    </div>
-                    <input type="text" placeholder="输入消息..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
-                    <button onclick="alert('消息已发送')" class="px-2 py-1 bg-indigo-600 text-white rounded-lg text-xs hover:bg-indigo-500 transition-all shrink-0">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                    </button>
-                </div>
             </div>
         </section>
     </main>
