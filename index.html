@@ -23,10 +23,12 @@
         .source-oa { border-left: 3px solid #10b981; }
         .source-workshop { border-left: 3px solid #64748b; }
         select option { background-color: #1e293b; color: #f1f5f9; }
-        .scroll-area::-webkit-scrollbar { width: 4px; }
-        .scroll-area::-webkit-scrollbar-track { background: transparent; }
-        .scroll-area::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        .scroll-area::-webkit-scrollbar-thumb:hover { background: #475569; }
+        * { scrollbar-width: thin !important; scrollbar-color: #1e293b #0f172a !important; }
+        *::-webkit-scrollbar { width: 6px !important; height: 6px !important; }
+        *::-webkit-scrollbar-track { background: #0f172a !important; }
+        *::-webkit-scrollbar-thumb { background: #1e293b !important; border-radius: 9999px !important; }
+        *::-webkit-scrollbar-thumb:hover { background: #334155 !important; }
+        *::-webkit-scrollbar-corner { background: #0f172a !important; }
         .nav-btn { transition: all 0.15s; }
         .nav-btn:hover { filter: brightness(1.2); }
         .nav-btn.active { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
@@ -49,7 +51,6 @@
             <div id="planner-select-panel" class="glass-panel rounded-2xl p-6 border border-slate-700">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg font-bold text-white">请选择防爆电机计划员工作台</h2>
-                    <span class="text-xs text-slate-400">共 7 个计划员</span>
                 </div>
                 <div id="planner-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
             </div>
@@ -88,7 +89,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-white">防爆电机计划员工作台</h1>
+                    <h1 id="workspace-title" class="text-lg font-bold text-white">防爆电机计划员工作台</h1>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -109,7 +110,6 @@
                 <div class="flex items-center space-x-2">
                     <div class="text-right">
                         <div id="header-planner-name" class="text-sm font-medium text-white">-</div>
-                        <div class="text-xs text-slate-400">子计划员</div>
                     </div>
                     <div id="header-planner-avatar" class="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-xs font-bold text-white">
                         -
@@ -416,7 +416,7 @@
                     </div>
 
                     <!-- 聊天内容：计划主管 -->
-                    <div id="chat-supervisor" class="chat-panel space-y-2 mb-2 max-h-36 overflow-y-auto">
+                    <div id="chat-supervisor" class="chat-panel scroll-area space-y-2 mb-2 max-h-36 overflow-y-auto">
                         <div class="flex items-start space-x-2">
                             <div class="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">主</div>
                             <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
@@ -455,7 +455,7 @@
                     </div>
 
                     <!-- 聊天内容：车间 -->
-                    <div id="chat-workshop" class="chat-panel hidden space-y-2 mb-2 max-h-36 overflow-y-auto">
+                    <div id="chat-workshop" class="chat-panel scroll-area hidden space-y-2 mb-2 max-h-36 overflow-y-auto">
                         <div class="flex items-start space-x-2">
                             <div class="w-6 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0">车</div>
                             <div class="bg-slate-700/50 rounded-lg p-1.5 flex-1">
@@ -812,33 +812,40 @@
     </main>
 
     <script>
-        const plannerList = ['张三', '李四', '王五', '赵六', '孙七', '周八', '吴九'];
-        let selectedPlanner = '';
+        const plannerProfiles = [
+            { roleLabel: '防爆电机子计划员（1人）', scope: '防爆电机', plannerName: '张三', workspaceTitle: '防爆电机子计划员工作台' },
+            { roleLabel: '中心高63-90异步电机子计划员（1人）', scope: '中心高63-90异步电机', plannerName: '李四', workspaceTitle: '中心高63-90异步电机子计划员工作台' },
+            { roleLabel: '中心高112-132异步电机子计划员（1人）', scope: '中心高112-132异步电机', plannerName: '王五', workspaceTitle: '中心高112-132异步电机子计划员工作台' },
+            { roleLabel: '中心高160-180异步电机子计划员（1人）', scope: '中心高160-180异步电机', plannerName: '赵六', workspaceTitle: '中心高160-180异步电机子计划员工作台' },
+            { roleLabel: '中心高200-225异步电机子计划员（1人）', scope: '中心高200-225异步电机', plannerName: '孙七', workspaceTitle: '中心高200-225异步电机子计划员工作台' },
+            { roleLabel: '中心高250-315异步电机子计划员（1人）', scope: '中心高250-315异步电机', plannerName: '周八', workspaceTitle: '中心高250-315异步电机子计划员工作台' },
+            { roleLabel: '永磁电机子计划员（1人）', scope: '永磁电机', plannerName: '吴九', workspaceTitle: '永磁电机子计划员工作台' }
+        ];
+        let selectedPlanner = null;
 
         function buildPlannerCards() {
             const plannerGrid = document.getElementById('planner-grid');
             if (!plannerGrid) return;
 
-            plannerGrid.innerHTML = plannerList.map((name, index) => `
+            plannerGrid.innerHTML = plannerProfiles.map((profile, index) => `
                 <button
-                    onclick="selectPlanner('${name}')"
+                    onclick="selectPlanner(${index})"
                     class="text-left bg-slate-800/60 border border-slate-700 hover:border-amber-500/50 rounded-xl p-3 transition-all hover:-translate-y-0.5"
                 >
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-slate-400">计划员 ${index + 1}</span>
-                        <span class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white text-xs flex items-center justify-center font-bold">${name.charAt(0)}</span>
+                    <div class="flex items-center justify-between">
+                        <div class="text-base font-semibold text-slate-100">${profile.roleLabel.replace('（1人）', '工作台')}</div>
+                        <span class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white text-xs flex items-center justify-center font-bold">${profile.plannerName.charAt(0)}</span>
                     </div>
-                    <div class="text-sm font-semibold text-slate-100">${name}</div>
-                    <div class="text-[11px] text-slate-500 mt-1">点击进入工作台</div>
                 </button>
             `).join('');
         }
 
-        function selectPlanner(name) {
-            selectedPlanner = name;
+        function selectPlanner(index) {
+            selectedPlanner = plannerProfiles[index] || null;
+            if (!selectedPlanner) return;
             document.getElementById('planner-select-panel').classList.add('hidden');
             document.getElementById('planner-login-panel').classList.remove('hidden');
-            document.getElementById('login-planner-name').textContent = name;
+            document.getElementById('login-planner-name').textContent = selectedPlanner.roleLabel.replace('（1人）', '工作台');
             document.getElementById('login-account').value = '';
             document.getElementById('login-password').value = '';
             document.getElementById('login-error').classList.add('hidden');
@@ -850,16 +857,20 @@
             document.getElementById('login-error').classList.add('hidden');
         }
 
-        function applyPlanner(name) {
-            const avatar = name.charAt(0) || '-';
+        function applyPlanner(profile) {
+            if (!profile) return;
+            const avatar = profile.plannerName.charAt(0) || '-';
             const headerName = document.getElementById('header-planner-name');
             const headerAvatar = document.getElementById('header-planner-avatar');
+            const workspaceTitle = document.getElementById('workspace-title');
 
-            if (headerName) headerName.textContent = name;
+            if (headerName) headerName.textContent = profile.plannerName;
             if (headerAvatar) headerAvatar.textContent = avatar;
+            if (workspaceTitle) workspaceTitle.textContent = profile.workspaceTitle || `${profile.scope}工作台`;
+            document.title = profile.workspaceTitle || `${profile.scope}工作台`;
 
             document.querySelectorAll('[data-planner-name]').forEach(el => {
-                el.textContent = name;
+                el.textContent = profile.plannerName;
             });
             document.querySelectorAll('[data-planner-avatar]').forEach(el => {
                 el.textContent = avatar;
@@ -868,6 +879,7 @@
 
         function handlePlannerLogin(event) {
             event.preventDefault();
+            if (!selectedPlanner) return;
             const account = document.getElementById('login-account').value.trim();
             const password = document.getElementById('login-password').value.trim();
             const errorEl = document.getElementById('login-error');
